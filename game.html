@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>外送任務遊戲｜McD 風格</title>
+  <style>
+    :root{
+      --mcd-red:#DB0007;
+      --mcd-yellow:#FFC72C;
+      --mcd-white:#FFFFFF;
+      --text:#1F1F1F;
+      --muted:#5C5C5C;
+      --card:#FFFFFF;
+      --border:rgba(0,0,0,.10);
+      --shadow:0 10px 30px rgba(0,0,0,.14);
+      --radius:18px;
+      --focus: 0 0 0 4px rgba(255,199,44,.45);
+      --good: #0f7b3d;
+      --bad: #b00020;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 500px at 15% 0%, rgba(255,199,44,.35), transparent 55%),
+        radial-gradient(900px 500px at 90% 15%, rgba(219,0,7,.25), transparent 60%),
+        linear-gradient(180deg, #fff 0%, #fff7df 55%, #ffffff 100%);
+    }
+    .container{max-width:1000px;margin:0 auto;padding:22px 16px 48px}
+    .hero{
+      position:relative;
+      background: linear-gradient(135deg, var(--mcd-red) 0%, #b60005 60%, #9d0004 100%);
+      color: var(--mcd-white);
+      border-radius: 26px;
+      padding: 18px 16px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-80px -120px auto auto;
+      width:320px;height:320px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,199,44,.95), rgba(255,199,44,.25) 55%, transparent 70%);
+      transform: rotate(12deg);
+      pointer-events:none;
+    }
+    .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .logo{
+      width:46px;height:46px;border-radius:14px;
+      background: linear-gradient(180deg, var(--mcd-yellow), #ffdd6b);
+      display:grid;place-items:center;
+      box-shadow: 0 10px 18px rgba(0,0,0,.18);
+      flex:0 0 auto;
+    }
+    .logo span{font-weight:900;font-size:24px;color:var(--mcd-red);line-height:1}
+    h1{margin:0;font-size:clamp(18px,2.5vw,28px);letter-spacing:.2px}
+    .sub{margin:6px 0 0;color:rgba(255,255,255,.92);line-height:1.6;max-width:80ch}
+    .top-actions{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      border:0;border-radius:999px;padding:10px 14px;
+      cursor:pointer;font-weight:800;font-size:13.5px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.10);
+      transition: transform .05s ease, filter .15s ease, box-shadow .15s ease;
+      user-select:none;
+      text-decoration:none;
+      display:inline-flex;align-items:center;justify-content:center;
+      min-height:38px;
+    }
+    .btn:active{transform: translateY(1px)}
+    .btn-primary{background:var(--mcd-yellow);color:#2a2100}
+    .btn-ghost{background:rgba(255,255,255,.88);color:var(--text);border:1px solid var(--border)}
+    .btn:focus-visible{outline:none;box-shadow:var(--focus)}
+    .grid{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+    }
+    .card{
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 26px rgba(0,0,0,.08);
+      overflow:hidden;
+    }
+    .card-h{
+      padding:12px 14px;
+      background: linear-gradient(90deg, rgba(255,199,44,.25), rgba(255,255,255,0));
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .card-h h2{margin:0;font-size:15.5px}
+    .pill{
+      padding:6px 10px;border-radius:999px;
+      font-weight:900;font-size:12px;
+      border:1px solid rgba(219,0,7,.18);
+      background: rgba(219,0,7,.08);
+      color: var(--mcd-red);
+      white-space:nowrap;
+    }
+    .card-b{padding:14px}
+    .hud{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .stat{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 16px;
+      padding:10px 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .stat .k{color:var(--muted);font-size:12.5px;font-weight:800}
+    .stat .v{margin-top:6px;font-size:18px;font-weight:900;letter-spacing:.2px}
+    .progress{
+      margin-top:12px;
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius: 999px;
+      overflow:hidden;
+      height: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .bar{height:100%;width:0%}
+    .steps{
+      margin-top:12px;
+      display:grid;
+      gap:10px;
+    }
+    .step{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background:#fff;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .icon{
+      width:36px;height:36px;border-radius:14px;
+      display:grid;place-items:center;
+      font-weight:900;
+      background: rgba(255,199,44,.28);
+      color:#2a2100;
+      flex:0 0 auto;
+    }
+    .step h3{margin:0;font-size:14px}
+    .step p{margin:6px 0 0;color:var(--muted);line-height:1.55;font-size:13px}
+    .step .right{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .mini{
+      border-radius:999px;border:1px solid var(--border);
+      padding:8px 10px;background:rgba(255,255,255,.95);
+      font-weight:900;font-size:12.5px;cursor:pointer;
+    }
+    .mini:disabled{opacity:.45;cursor:not-allowed}
+    .msg{
+      margin-top:12px;
+      border-radius:16px;
+      padding:12px;
+      border: 1px dashed rgba(0,0,0,.18);
+      background: rgba(255,255,255,.7);
+      color: var(--text);
+      line-height:1.6;
+      font-size:13.5px;
+    }
+    .msg.good{border-color: rgba(15,123,61,.35); background: rgba(15,123,61,.06)}
+    .msg.bad{border-color: rgba(176,0,32,.35); background: rgba(176,0,32,.06)}
+    .map{
+      position:relative;
+      height: 420px;
+      background: #fff;
+      border:1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+      overflow:hidden;
+    }
+    .lane{
+      position:absolute;inset:0;
+      background:
+        linear-gradient(90deg, rgba(255,199,44,.12), rgba(255,255,255,0) 55%),
+        repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 2px, transparent 2px 14px);
+      opacity:.9;
+    }
+    .home, .store{
+      position:absolute;
+      width:120px;height:90px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.95);
+      display:flex;flex-direction:column;justify-content:center;
+      padding:10px 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.08);
+    }
+    .store{left:16px;top:18px}
+    .home{right:16px;bottom:18px}
+    .tag{font-size:12px;color:var(--muted);font-weight:900}
+    .label{margin-top:6px;font-weight:1000;letter-spacing:.2px}
+    .car{
+      position:absolute;
+      width:48px;height:48px;
+      border-radius: 18px;
+      border:1px solid rgba(219,0,7,.22);
+      background: rgba(219,0,7,.10);
+      display:grid;place-items:center;
+      font-size:22px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.16);
+      left: 46px;
+      top: 130px;
+      transition: left .18s linear, top .18s linear;
+    }
+    .tip{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6}
+    @media (max-width: 860px){
+      .grid{grid-template-columns:1fr}
+      .map{height: 360px}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="hero">
+      <div class="row">
+        <div class="logo" aria-hidden="true"><span>M</span></div>
+        <div style="flex:1 1 auto;">
+          <h1>外送任務遊戲：準時送達拿積分</h1>
+          <p class="sub">流程：接單 → 備餐 → 裝車 → 開車配送 → 在時限內送達得分。每局會隨機出現不同訂單難度與時間限制。</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <a class="btn btn-ghost" href="./index.html">返回 FAQ</a>
+        <button class="btn btn-primary" id="startBtn" type="button">開始新訂單</button>
+        <button class="btn btn-ghost" id="resetBtn" type="button">重置積分</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <div class="card-h">
+          <h2>任務面板</h2>
+          <div class="pill" id="statePill">待機中</div>
+        </div>
+        <div class="card-b">
+          <div class="hud">
+            <div class="stat">
+              <div class="k">倒數時間</div>
+              <div class="v"><span id="timeLeft">--</span> 秒</div>
+            </div>
+            <div class="stat">
+              <div class="k">積分</div>
+              <div class="v" id="score">0</div>
+            </div>
+            <div class="stat">
+              <div class="k">本單難度</div>
+              <div class="v" id="difficulty">--</div>
+            </div>
+            <div class="stat">
+              <div class="k">獎勵係數</div>
+              <div class="v" id="multiplier">--</div>
+            </div>
+          </div>
+
+          <div class="progress" aria-label="訂單進度">
+            <div class="bar" id="progressBar"></div>
+          </div>
+
+          <div class="steps" id="steps">
+            <div class="step">
+              <div class="icon">1</div>
+              <div>
+                <h3>接收訂單</h3>
+                <p>確認訂單資訊，系統開始計時。</p>
+              </div>
+              <div class="right">
+                <button class="mini" id="btnAccept" disabled>接單</button>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="icon">2</div>
+              <div>
+                <h3>準備訂單</h3>
+                <p>依訂單量備餐，時間越久越容易超時。</p>
+              </div>
+              <div class="right">
+                <button class="mini" id="btnPrep" disabled>備餐完成</button>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="icon">3</div>
+              <div>
+                <h3>放進車內</h3>
+                <p>完成包裝檢查並裝車，準備出發。</p>
+              </div>
+              <div class="right">
+                <button class="mini" id="btnLoad" disabled>裝車完成</button>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="icon">4</div>
+              <div>
+                <h3>開車配送</h3>
+                <p>用方向鍵移動車子到客戶家；到達後完成送餐。</p>
+              </div>
+              <div class="right">
+                <button class="mini" id="btnDrive" disabled>開始開車</button>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="icon">5</div>
+              <div>
+                <h3>送達完成</h3>
+                <p>在時間內送達可得分；越快分數越高。</p>
+              </div>
+              <div class="right">
+                <button class="mini" id="btnDeliver" disabled>完成送達</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg" id="message">
+            點「開始新訂單」後進入任務流程。提示：配送階段用鍵盤方向鍵移動🚗。
+          </div>
+
+          <div class="tip">
+            計分規則（可改）：成功送達得分 = 基礎分 × 難度係數 × 速度加成（剩餘時間比例）。超時則此單失敗不加分。
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="card-h">
+          <h2>配送地圖</h2>
+          <div class="pill" id="mapPill">未出發</div>
+        </div>
+        <div class="card-b">
+          <div class="map" id="map">
+            <div class="lane"></div>
+
+            <div class="store" aria-label="門市">
+              <div class="tag">起點</div>
+              <div class="label">麥當勞門市</div>
+            </div>
+
+            <div class="home" aria-label="客戶家">
+              <div class="tag">終點</div>
+              <div class="label">客戶家</div>
+            </div>
+
+            <div class="car" id="car" aria-label="外送車">🚗</div>
+          </div>
+
+          <div class="tip">
+            配送階段：
+            <ul style="margin:8px 0 0 18px; padding:0;">
+              <li>按「開始開車」進入配送</li>
+              <li>用鍵盤方向鍵移動車子</li>
+              <li>車子進入「客戶家」區域後即可點「完成送達」</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    // ---------- Game State ----------
+    const State = {
+      IDLE: "IDLE",
+      READY: "READY",         // after new order created
+      ACCEPTED: "ACCEPTED",
+      PREPPED: "PREPPED",
+      LOADED: "LOADED",
+      DRIVING: "DRIVING",
+      ARRIVED: "ARRIVED",
+      DONE: "DONE",
+      FAILED: "FAILED",
+    };
+
+    const els = {
+      startBtn: document.getElementById("startBtn"),
+      resetBtn: document.getElementById("resetBtn"),
+      statePill: document.getElementById("statePill"),
+      mapPill: document.getElementById("mapPill"),
+      timeLeft: document.getElementById("timeLeft"),
+      score: document.getElementById("score"),
+      difficulty: document.getElementById("difficulty"),
+      multiplier: document.getElementById("multiplier"),
+      progressBar: document.getElementById("progressBar"),
+      message: document.getElementById("message"),
+      btnAccept: document.getElementById("btnAccept"),
+      btnPrep: document.getElementById("btnPrep"),
+      btnLoad: document.getElementById("btnLoad"),
+      btnDrive: document.getElementById("btnDrive"),
+      btnDeliver: document.getElementById("btnDeliver"),
+      map: document.getElementById("map"),
+      car: document.getElementById("car"),
+    };
+
+    let game = {
+      state: State.IDLE,
+      score: 0,
+      timeLimit: 0,
+      timeLeft: 0,
+      timerId: null,
+      difficulty: "—",
+      multiplier: 1,
+      basePoints: 100,
+      drivingEnabled: false,
+      // car position
+      carX: 46,
+      carY: 130,
+      step: 14
+    };
+
+    function setPill(text, mode){
+      els.statePill.textContent = text;
+      if(mode === "good"){
+        els.statePill.style.background = "rgba(15,123,61,.10)";
+        els.statePill.style.borderColor = "rgba(15,123,61,.22)";
+        els.statePill.style.color = "var(--good)";
+      } else if(mode === "bad"){
+        els.statePill.style.background = "rgba(176,0,32,.10)";
+        els.statePill.style.borderColor = "rgba(176,0,32,.22)";
+        els.statePill.style.color = "var(--bad)";
+      } else {
+        els.statePill.style.background = "rgba(219,0,7,.08)";
+        els.statePill.style.borderColor = "rgba(219,0,7,.18)";
+        els.statePill.style.color = "var(--mcd-red)";
+      }
+    }
+    function setMsg(text, type){
+      els.message.classList.remove("good","bad");
+      if(type) els.message.classList.add(type);
+      els.message.textContent = text;
+    }
+
+    function updateUI(){
+      els.score.textContent = String(game.score);
+      els.timeLeft.textContent = game.timeLeft ? String(game.timeLeft) : "--";
+      els.difficulty.textContent = game.difficulty;
+      els.multiplier.textContent = game.multiplier ? `×${game.multiplier.toFixed(1)}` : "--";
+
+      // progress: 5 steps
+      const progressMap = {
+        [State.IDLE]: 0,
+        [State.READY]: 5,
+        [State.ACCEPTED]: 20,
+        [State.PREPPED]: 45,
+        [State.LOADED]: 65,
+        [State.DRIVING]: 80,
+        [State.ARRIVED]: 90,
+        [State.DONE]: 100,
+        [State.FAILED]: 100
+      };
+      const p = progressMap[game.state] ?? 0;
+      els.progressBar.style.width = p + "%";
+      // use implicit colors (do not set explicit palette here)
+
+      // buttons
+      els.btnAccept.disabled = !(game.state === State.READY);
+      els.btnPrep.disabled = !(game.state === State.ACCEPTED);
+      els.btnLoad.disabled = !(game.state === State.PREPPED);
+      els.btnDrive.disabled = !(game.state === State.LOADED);
+      els.btnDeliver.disabled = !(game.state === State.ARRIVED);
+
+      // map pill
+      if(game.state === State.DRIVING) els.mapPill.textContent = "配送中";
+      else if(game.state === State.ARRIVED) els.mapPill.textContent = "已到達";
+      else if(game.state === State.DONE) els.mapPill.textContent = "已完成";
+      else if(game.state === State.FAILED) els.mapPill.textContent = "已失敗";
+      else els.mapPill.textContent = "未出發";
+    }
+
+    function stopTimer(){
+      if(game.timerId){
+        clearInterval(game.timerId);
+        game.timerId = null;
+      }
+    }
+
+    function startTimer(){
+      stopTimer();
+      game.timerId = setInterval(() => {
+        if(game.state === State.DONE || game.state === State.FAILED) return;
+        game.timeLeft -= 1;
+        if(game.timeLeft <= 0){
+          game.timeLeft = 0;
+          failOrder("超過規定時間，訂單失敗。建議：尖峰時段優先裝車出發，降低延遲風險。");
+        }
+        updateUI();
+      }, 1000);
+    }
+
+    function newOrder(){
+      stopTimer();
+      // random difficulty
+      const roll = Math.random();
+      if(roll < 0.45){
+        game.difficulty = "一般";
+        game.multiplier = 1.0;
+        game.timeLimit = 60;
+      } else if(roll < 0.80){
+        game.difficulty = "繁忙";
+        game.multiplier = 1.3;
+        game.timeLimit = 50;
+      } else {
+        game.difficulty = "尖峰/惡天候";
+        game.multiplier = 1.6;
+        game.timeLimit = 45;
+      }
+      game.timeLeft = game.timeLimit;
+      game.state = State.READY;
+      game.drivingEnabled = false;
+
+      // reset car position near store
+      game.carX = 46;
+      game.carY = 130;
+      renderCar();
+
+      setPill("等待接單", "normal");
+      setMsg(`新訂單已生成（難度：${game.difficulty}）。請先按「接單」開始計時與流程。`);
+      updateUI();
+    }
+
+    function acceptOrder(){
+      game.state = State.ACCEPTED;
+      setPill("已接單", "normal");
+      setMsg("已接收訂單。下一步：完成備餐（備餐完成後再裝車）。");
+      // start countdown once accepted
+      startTimer();
+      updateUI();
+    }
+
+    function prepDone(){
+      // simulate prep consumes time (penalty)
+      // You can tune these numbers
+      const penalty = (game.difficulty === "一般") ? 6 : (game.difficulty === "繁忙") ? 8 : 10;
+      game.timeLeft = Math.max(0, game.timeLeft - penalty);
+
+      game.state = State.PREPPED;
+      setPill("備餐完成", "normal");
+      setMsg(`備餐完成（耗時-${penalty}s）。下一步：裝車。`);
+      updateUI();
+    }
+
+    function loadDone(){
+      const penalty = (game.difficulty === "一般") ? 4 : (game.difficulty === "繁忙") ? 5 : 6;
+      game.timeLeft = Math.max(0, game.timeLeft - penalty);
+
+      game.state = State.LOADED;
+      setPill("已裝車", "normal");
+      setMsg(`裝車完成（耗時-${penalty}s）。下一步：開始開車配送。`);
+      updateUI();
+    }
+
+    function startDriving(){
+      game.state = State.DRIVING;
+      game.drivingEnabled = true;
+      setPill("配送中", "normal");
+      setMsg("配送開始！使用方向鍵移動車子到「客戶家」區域。到達後可點「完成送達」。");
+      updateUI();
+    }
+
+    function arrived(){
+      game.state = State.ARRIVED;
+      game.drivingEnabled = false;
+      setPill("已到達", "good");
+      setMsg("你已到達客戶家！點「完成送達」結算積分。", "good");
+      updateUI();
+    }
+
+    function deliver(){
+      // score formula: basePoints * multiplier * (0.5 + timeLeft/timeLimit)
+      const speedFactor = 0.5 + (game.timeLeft / game.timeLimit);
+      const gained = Math.round(game.basePoints * game.multiplier * speedFactor);
+
+      game.score += gained;
+      game.state = State.DONE;
+      game.drivingEnabled = false;
+      stopTimer();
+
+      setPill("送達成功", "good");
+      setMsg(`送達成功！獲得 ${gained} 分（速度加成：${speedFactor.toFixed(2)}）。可再按「開始新訂單」挑戰下一單。`, "good");
+      updateUI();
+    }
+
+    function failOrder(reason){
+      game.state = State.FAILED;
+      game.drivingEnabled = false;
+      stopTimer();
+      setPill("訂單失敗", "bad");
+      setMsg(reason || "訂單失敗。可按「開始新訂單」重新挑戰。", "bad");
+      updateUI();
+    }
+
+    // ---------- Movement / Collision ----------
+    function renderCar(){
+      els.car.style.left = game.carX + "px";
+      els.car.style.top = game.carY + "px";
+    }
+
+    function isInsideHome(){
+      // home box is at bottom-right: we can compute based on map size
+      const mapRect = els.map.getBoundingClientRect();
+      // home element is positioned: right 16, bottom 18, size 120x90
+      // We'll approximate with percentages using current map client size
+      const homeX = mapRect.width - 16 - 120;
+      const homeY = mapRect.height - 18 - 90;
+
+      // car box (48x48)
+      const carW = 48, carH = 48;
+
+      const cx = game.carX;
+      const cy = game.carY;
+
+      // overlap threshold
+      const overlapX = (cx + carW) > homeX && cx < (homeX + 120);
+      const overlapY = (cy + carH) > homeY && cy < (homeY + 90);
+      return overlapX && overlapY;
+    }
+
+    function clampCar(){
+      // keep within map bounds
+      const mapRect = els.map.getBoundingClientRect();
+      const maxX = mapRect.width - 48;
+      const maxY = mapRect.height - 48;
+      game.carX = Math.max(0, Math.min(maxX, game.carX));
+      game.carY = Math.max(0, Math.min(maxY, game.carY));
+    }
+
+    window.addEventListener("keydown", (e) => {
+      if(!game.drivingEnabled) return;
+
+      const key = e.key;
+      let moved = false;
+
+      if(key === "ArrowUp"){ game.carY -= game.step; moved = true; }
+      else if(key === "ArrowDown"){ game.carY += game.step; moved = true; }
+      else if(key === "ArrowLeft"){ game.carX -= game.step; moved = true; }
+      else if(key === "ArrowRight"){ game.carX += game.step; moved = true; }
+
+      if(moved){
+        e.preventDefault();
+        clampCar();
+        renderCar();
+        // arrived check
+        if(isInsideHome()){
+          arrived();
+        }
+      }
+    }, {passive:false});
+
+    // ---------- Wire UI ----------
+    els.startBtn.addEventListener("click", newOrder);
+    els.resetBtn.addEventListener("click", () => {
+      game.score = 0;
+      setMsg("積分已重置。可按「開始新訂單」重新挑戰。");
+      updateUI();
+    });
+    els.btnAccept.addEventListener("click", acceptOrder);
+    els.btnPrep.addEventListener("click", prepDone);
+    els.btnLoad.addEventListener("click", loadDone);
+    els.btnDrive.addEventListener("click", startDriving);
+    els.btnDeliver.addEventListener("click", deliver);
+
+    // Initial UI
+    setPill("待機中", "normal");
+    updateUI();
+    renderCar();
+  </script>
+</body>
+</html>

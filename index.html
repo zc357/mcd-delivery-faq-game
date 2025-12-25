@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>外送常見問題（FAQ）｜麥當勞風格</title>
+  <meta name="description" content="外送常見問題（FAQ）：包裝防溢、到餐異常、溫度控管、配送時間與補救機制。" />
+  <style>
+    :root{
+      /* McDonald's-inspired palette */
+      --mcd-red:#DB0007;
+      --mcd-yellow:#FFC72C;
+      --mcd-white:#FFFFFF;
+      --text:#1F1F1F;
+      --muted:#5C5C5C;
+      --card:#FFFFFF;
+      --border:rgba(0,0,0,.10);
+      --shadow:0 10px 30px rgba(0,0,0,.14);
+      --radius:18px;
+      --focus: 0 0 0 4px rgba(255,199,44,.45);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 500px at 15% 0%, rgba(255,199,44,.35), transparent 55%),
+        radial-gradient(900px 500px at 90% 15%, rgba(219,0,7,.25), transparent 60%),
+        linear-gradient(180deg, #fff 0%, #fff7df 55%, #ffffff 100%);
+    }
+
+    a{color:inherit}
+    .container{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 26px 18px 48px;
+    }
+
+    /* Top banner */
+    .hero{
+      position:relative;
+      background: linear-gradient(135deg, var(--mcd-red) 0%, #b60005 60%, #9d0004 100%);
+      color: var(--mcd-white);
+      border-radius: 26px;
+      padding: 22px 18px 18px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:-80px -120px auto auto;
+      width:320px;
+      height:320px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,199,44,.95), rgba(255,199,44,.25) 55%, transparent 70%);
+      transform: rotate(12deg);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .hero::after{
+      content:"";
+      position:absolute;
+      inset:auto -120px -140px auto;
+      width:380px;
+      height:380px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.22), transparent 65%);
+      transform: rotate(-10deg);
+      pointer-events:none;
+    }
+    .brand-row{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom: 10px;
+    }
+    .logo{
+      width:48px;height:48px;
+      border-radius: 14px;
+      background: linear-gradient(180deg, var(--mcd-yellow), #ffdd6b);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+      box-shadow: 0 10px 18px rgba(0,0,0,.18);
+    }
+    .logo span{
+      font-weight: 900;
+      font-size: 24px;
+      color: var(--mcd-red);
+      letter-spacing: .5px;
+      line-height:1;
+    }
+    .hero h1{
+      font-size: clamp(20px, 2.6vw, 30px);
+      margin:0;
+      letter-spacing:.3px;
+    }
+    .hero p{
+      margin:8px 0 0;
+      color: rgba(255,255,255,.92);
+      line-height: 1.6;
+      max-width: 72ch;
+    }
+
+    /* Controls */
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin: 16px 0 18px;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .search{
+      flex: 1 1 360px;
+      position:relative;
+    }
+    .search input{
+      width:100%;
+      padding: 12px 14px 12px 40px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.92);
+      outline:none;
+      box-shadow: 0 6px 18px rgba(0,0,0,.08);
+      font-size: 14.5px;
+    }
+    .search input:focus{box-shadow: var(--focus), 0 6px 18px rgba(0,0,0,.08)}
+    .search .icon{
+      position:absolute;
+      left:14px; top:50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      opacity:.65;
+    }
+    .btns{
+      display:flex;
+      gap:10px;
+      flex: 0 0 auto;
+    }
+    button{
+      border:0;
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor:pointer;
+      font-weight: 700;
+      font-size: 13.5px;
+      transition: transform .05s ease, filter .15s ease, box-shadow .15s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    button:active{transform: translateY(1px)}
+    .btn-primary{
+      background: var(--mcd-yellow);
+      color:#2a2100;
+      box-shadow: 0 10px 18px rgba(255,199,44,.35);
+    }
+    .btn-primary:hover{filter: brightness(.98)}
+    .btn-ghost{
+      background: rgba(255,255,255,.85);
+      color: var(--text);
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 18px rgba(0,0,0,.08);
+    }
+    .btn-ghost:hover{filter: brightness(.99)}
+    button:focus-visible{
+      outline:none;
+      box-shadow: var(--focus);
+    }
+
+    /* Section cards */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 14px;
+    }
+    .section{
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 26px rgba(0,0,0,.08);
+      overflow:hidden;
+    }
+    .section-header{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap:12px;
+      padding: 14px 16px;
+      background: linear-gradient(90deg, rgba(255,199,44,.25), rgba(255,255,255,0));
+    }
+    .section-title{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .section-sub{
+      margin:4px 0 0;
+      color: var(--muted);
+      font-size: 12.8px;
+      line-height: 1.45;
+    }
+    .badge{
+      flex: 0 0 auto;
+      background: rgba(219,0,7,.10);
+      color: var(--mcd-red);
+      border: 1px solid rgba(219,0,7,.18);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    /* Accordion */
+    .faq{
+      padding: 0 8px 10px;
+    }
+    details{
+      border-radius: 14px;
+      border: 1px solid transparent;
+      margin: 8px;
+      background: var(--card);
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+      overflow:hidden;
+    }
+    details[open]{
+      border-color: rgba(255,199,44,.55);
+      box-shadow: 0 10px 22px rgba(255,199,44,.18), 0 6px 18px rgba(0,0,0,.06);
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      padding: 13px 14px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      font-weight: 800;
+      line-height: 1.35;
+    }
+    summary::-webkit-details-marker{display:none}
+    .qnum{
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: rgba(255,199,44,.35);
+      display:grid;
+      place-items:center;
+      color:#2a2100;
+      font-weight: 900;
+      font-size: 13px;
+    }
+    .chev{
+      margin-left:auto;
+      flex: 0 0 auto;
+      width: 28px; height:28px;
+      border-radius: 10px;
+      display:grid; place-items:center;
+      background: rgba(219,0,7,.06);
+      color: var(--mcd-red);
+      font-weight: 900;
+      transition: transform .15s ease;
+    }
+    details[open] .chev{transform: rotate(180deg)}
+    .answer{
+      padding: 0 14px 14px 58px;
+      color: var(--text);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+    .answer .hint{
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px dashed rgba(219,0,7,.20);
+      background: rgba(219,0,7,.04);
+      color: #5a0709;
+      font-size: 13px;
+    }
+    .answer ul{
+      margin: 8px 0 0 18px;
+      padding:0;
+    }
+    .answer li{margin: 4px 0}
+
+    /* Footer contact */
+    .footer{
+      margin-top: 18px;
+      padding: 16px 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,199,44,.24), rgba(255,255,255,.9));
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 26px rgba(0,0,0,.06);
+    }
+    .footer h2{
+      margin:0 0 6px;
+      font-size: 15px;
+      letter-spacing:.2px;
+    }
+    .footer p{
+      margin:0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 13.5px;
+    }
+    .channels{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--border);
+      font-weight: 800;
+      font-size: 13px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.06);
+    }
+    .chip small{
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (min-width: 860px){
+      .grid{
+        grid-template-columns: 1fr 1fr;
+      }
+      .section:nth-child(3),
+      .section:nth-child(4){
+        grid-column: span 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <header class="hero" role="banner" aria-label="外送 FAQ 標題區">
+      <div class="brand-row">
+        <div class="logo" aria-hidden="true"><span>M</span></div>
+        <div>
+          <h1>外送常見問題（FAQ）</h1>
+          <p>以「包裝完整、防溢設計、溫度與時間控管、異常快速補救」為核心，協助你在外送情境下更安心、更清楚、更快速處理問題。</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="controls" role="region" aria-label="搜尋與操作">
+      <div class="search">
+        <span class="icon" aria-hidden="true">⌕</span>
+        <input id="searchInput" type="search" placeholder="搜尋問題關鍵字（例如：封條、冷掉、退款、延遲）" aria-label="搜尋外送常見問題" />
+      </div>
+
+      <div class="btns">
+        <button class="btn-primary" id="expandAllBtn" type="button">全部展開</button>
+        <button class="btn-ghost" id="collapseAllBtn" type="button">全部收合</button>
+      </div>
+    </div>
+
+    <main class="grid" id="faqGrid" role="main">
+
+      <!-- Section 1 -->
+      <section class="section" data-section="packaging">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">一、包裝與防溢相關（Packaging Integrity）</h2>
+            <p class="section-sub">重點：封膜/封條完整性、防溢防壓、衛生隔離、到餐即檢查。</p>
+          </div>
+          <div class="badge">3 題</div>
+        </div>
+
+        <div class="faq">
+          <details data-q="封膜 封條 衛生 防溢 完整性">
+            <summary>
+              <span class="qnum">Q1</span>
+              <span>為什麼外送飲料會有封膜或封條？是否影響衛生？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              外送飲料加封膜或封條，主要用於確保運送過程中的<strong>完整性</strong>並降低<strong>溢漏風險</strong>，同時可避免配送途中被誤觸或污染。此設計屬於外送安全常見作法，通常<strong>不影響飲品本身的衛生與品質</strong>。
+              <div class="hint">
+                建議收餐時先檢查封膜/封條是否完整；若封條異常或疑似影響餐點完整性，請先停止食用並依 Q3 流程回報。
+              </div>
+            </div>
+          </details>
+
+          <details data-q="一次性 包裝 食品級 規範 衛生">
+            <summary>
+              <span class="qnum">Q2</span>
+              <span>外送包裝是否為一次性？是否符合食品安全規範？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              外送餐點使用的容器、封膜與外袋通常為<strong>一次性食品級包裝</strong>，選材會以可接觸食品、安全衛生與運送需求為原則。包裝結構多採用<strong>防溢、防壓、衛生隔離</strong>設計，以協助維持配送過程中的餐點品質。
+            </div>
+          </details>
+
+          <details data-q="破損 封條 已拆 回報 客服 補送 退款">
+            <summary>
+              <span class="qnum">Q3</span>
+              <span>餐點到達時若發現包裝破損或封條已拆，該怎麼處理？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              若收餐時發現包裝破損、封條異常或疑似影響餐點完整性，建議<strong>先勿食用</strong>，並儘速依下列方式回報：
+              <ul>
+                <li><strong>外送 App 訂單頁面</strong> →「問題回報／訂單協助」</li>
+                <li><strong>App 內線上客服</strong>（或平台提供之客服專線）</li>
+              </ul>
+              客服人員將依情況協助<strong>補送、退款或其他補救措施</strong>。
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="section" data-section="issues">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">二、到餐異常與補救機制（Order Issue Resolution）</h2>
+            <p class="section-sub">重點：缺餐/錯餐、傾倒灑漏、品質異常，快速回報與補救。</p>
+          </div>
+          <div class="badge">3 題</div>
+        </div>
+
+        <div class="faq">
+          <details data-q="缺餐 錯餐 不符 訂單 回報 補送 退款 點數">
+            <summary>
+              <span class="qnum">Q4</span>
+              <span>如果收到的餐點與訂單內容不符（缺餐、錯餐）該怎麼辦？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              若餐點內容與訂單不符，請於收餐後<strong>儘速</strong>透過外送 App 訂單頁面回報，並簡要說明狀況（例如缺少品項或餐點錯誤）。客服將依實際情況提供<strong>補送、退款或點數補償</strong>等處理方式。
+            </div>
+          </details>
+
+          <details data-q="傾倒 灑漏 補送 退款 申請">
+            <summary>
+              <span class="qnum">Q5</span>
+              <span>餐點明顯傾倒、灑漏，是否可以申請補送或退款？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              若餐點送達時有明顯傾倒、灑漏並影響食用體驗，請立即透過 App 內回報。經客服確認後，將視狀況提供<strong>補送餐點或退款處理</strong>，以保障消費權益。
+            </div>
+          </details>
+
+          <details data-q="異物 異味 品質 異常 停止食用 回報 客服">
+            <summary>
+              <span class="qnum">Q6</span>
+              <span>餐點有異物或品質異常時，處理流程是什麼？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              如發現餐點有異物、異味或品質異常，請<strong>停止食用</strong>並透過外送平台「訂單問題回報」功能聯繫客服。客服將依標準流程協助處理，並提供相應的補救方案（例如退款、補送或其他補償）。
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="section" data-section="temperature">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">三、溫度控管與食品安全（Temperature &amp; Food Safety）</h2>
+            <p class="section-sub">重點：外送口感差異、保溫設計、冷掉處理與回報。</p>
+          </div>
+          <div class="badge">2 題</div>
+        </div>
+
+        <div class="faq">
+          <details data-q="口感 不同 內用 外送 密閉 包裝 環境 溫度">
+            <summary>
+              <span class="qnum">Q7</span>
+              <span>為什麼有些餐點外送後口感與內用不同？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              部分餐點在外送過程中，會受<strong>運送時間、密閉包裝與環境溫度</strong>影響，口感可能與內用略有差異。已透過<strong>分層包裝、保溫設計與出餐流程控管</strong>盡量維持餐點品質。
+            </div>
+          </details>
+
+          <details data-q="冷掉 溫度 不如 預期 尖峰 天候 交通 回報 補救">
+            <summary>
+              <span class="qnum">Q8</span>
+              <span>若餐點送達時已冷掉，是否屬於正常狀況？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              外送餐點通常於出餐後即交由外送員配送，並搭配保溫包裝；惟在交通、天候或尖峰時段，配送可能延長而影響送達溫度。若溫度明顯不如預期，建議透過 App 回報，客服將協助確認並提供相應補救。
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="section" data-section="delivery">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">四、配送時間與流程說明（Delivery Time &amp; Process）</h2>
+            <p class="section-sub">重點：尖峰/天候影響、配送延遲的補救或補償機制。</p>
+          </div>
+          <div class="badge">2 題</div>
+        </div>
+
+        <div class="faq">
+          <details data-q="尖峰 用餐 高峰 天氣 不佳 品質 影響 延遲">
+            <summary>
+              <span class="qnum">Q9</span>
+              <span>尖峰時段（用餐高峰、天氣不佳）外送品質是否會受影響？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              用餐尖峰或天候不佳時，配送可能因訂單量、交通狀況或安全因素而延長。為降低影響，平台與門市通常會透過系統調度與流程優化，盡量維持外送品質與穩定性。
+            </div>
+          </details>
+
+          <details data-q="時間 過長 超出 預估 補救 補償 退款 優惠券">
+            <summary>
+              <span class="qnum">Q10</span>
+              <span>若外送時間過長，是否有補救或補償機制？</span>
+              <span class="chev" aria-hidden="true">▾</span>
+            </summary>
+            <div class="answer">
+              若配送時間明顯超出預估範圍，建議透過外送 App 訂單頁面回報。客服將依實際狀況提供<strong>退款、優惠券或其他補償方式</strong>，以確保用餐體驗。
+            </div>
+          </details>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="footer" role="contentinfo" aria-label="聯絡與回報方式">
+      <h2>官方回報與聯絡方式（建議置底）</h2>
+      <p>
+        如遇缺餐、錯餐、破損、灑漏、溫度或配送延遲等狀況，請以<strong>訂單頁面回報</strong>為優先（可快速對應訂單資訊），並依平台提供的客服管道處理。
+      </p>
+      <div class="channels" aria-label="回報管道">
+        <div class="chip">📱 App 訂單頁面 <small>問題回報／訂單協助</small></div>
+        <div class="chip">💬 App 線上客服 <small>客服中心</small></div>
+        <div class="chip">📞 客服專線 <small>依外送平台公告</small></div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    (function(){
+      const searchInput = document.getElementById('searchInput');
+      const expandAllBtn = document.getElementById('expandAllBtn');
+      const collapseAllBtn = document.getElementById('collapseAllBtn');
+      const allDetails = Array.from(document.querySelectorAll('details'));
+      const allSections = Array.from(document.querySelectorAll('.section'));
+
+      function setAll(open){
+        allDetails.forEach(d => d.open = open);
+      }
+
+      expandAllBtn.addEventListener('click', () => setAll(true));
+      collapseAllBtn.addEventListener('click', () => setAll(false));
+
+      // Basic search filter (matches question + keywords)
+      function normalize(str){
+        return (str || '').toLowerCase().replace(/\s+/g,' ').trim();
+      }
+
+      function applySearch(){
+        const q = normalize(searchInput.value);
+        let anyVisible = false;
+
+        allSections.forEach(section => {
+          const detailsList = Array.from(section.querySelectorAll('details'));
+          let sectionHasVisible = false;
+
+          detailsList.forEach(d => {
+            const text = normalize(d.innerText);
+            const extra = normalize(d.getAttribute('data-q'));
+            const match = !q || text.includes(q) || extra.includes(q);
+
+            d.style.display = match ? '' : 'none';
+            if(match) sectionHasVisible = true;
+          });
+
+          section.style.display = sectionHasVisible ? '' : 'none';
+          if(sectionHasVisible) anyVisible = true;
+        });
+
+        // Optional: if user searched and nothing matches, collapse all
+        if(q && !anyVisible){
+          setAll(false);
+        }
+      }
+
+      searchInput.addEventListener('input', applySearch);
+
+      // Accessibility: allow Enter to open first visible result quickly
+      searchInput.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter'){
+          const firstVisible = allDetails.find(d => d.style.display !== 'none');
+          if(firstVisible){
+            firstVisible.open = true;
+            firstVisible.querySelector('summary')?.focus();
+          }
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
